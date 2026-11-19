@@ -1,0 +1,33 @@
+{
+  "_assinatura": "Site Cinematográfico · Labrego IA · LBG-SC-2026-v1",
+  "nome": "GWS Espaço Beleza",
+  "slug": "gws-espaco-beleza",
+  "negocio": "Cabeleireira: corte, luzes, coloração, progressiva, botox, selagem térmica, alinhamento, escova com cacho. Atende sozinha em dois endereços.",
+  "publico": "Mulheres da zona sul de São Paulo (Usina Piratininga / Jardim Selma / Cidade Dutra)",
+  "identidade": {
+    "cores": { "fundo": "#14100d", "texto": "#f5eee6", "acento": "#d8b98a", "nude": "#c9a08e" },
+    "fontes": { "titulo": "Cormorant Garamond", "texto": "Inter" },
+    "clima": ["luminoso", "cuidadoso", "sofisticado"],
+    "tema": "escuro"
+  },
+  "logo": "",
+  "copy": {
+    "frase_abertura": "Transformando fios e elevando autoestima.",
+    "diferenciais": ["selagem térmica", "alinhamento capilar", "atendimento individual com hora marcada", "dois endereços"],
+    "textos_prontos": "Corte | Luzes | Coloração | Progressiva | Botox | Selagem | Alinhamento",
+    "depoimentos_reais": []
+  },
+  "enderecos": [
+    "Av. Miguel Yunes - Usina Piratininga, São Paulo - SP, 04444-000",
+    "R. Pedro Fernandes de Aragão, 265 - Jardim Selma, São Paulo - SP"
+  ],
+  "horario": "Terça a sábado, 8h às 18h (domingo e segunda fechado)",
+  "instagram": "https://www.instagram.com/gwsespacobeleza/",
+  "google": "https://share.google/PLjGxptXY86X3P8vY  (nota 4,7 · 7 avaliações)",
+  "whatsapp": { "numero": "5511954840664", "mensagem": "Olá! Vi o site e quero agendar um horário 🤍" },
+  "email_contato": "johenartegrafica@gmail.com",
+  "secoes": ["sobre", "serviços", "nossos trabalhos", "avaliações", "dois endereços", "como agendar", "contato"],
+  "credito_rodape": true,
+  "conceito": "o fio que ganha luz: macro de mechas escuras que se alinham e ficam espelhadas",
+  "modelos": { "video": "google/veo-3.1-lite", "imagem": "black-forest-labs/flux.2-pro" }
+}
