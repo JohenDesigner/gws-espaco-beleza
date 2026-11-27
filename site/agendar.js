@@ -132,8 +132,15 @@
     const quando = (v) => new Date(String(v).replace(" ", "T").replace(/([+-]\d{2})$/, "$1:00")).getTime();
     const ocupados = (data || []).map((o) => [quando(o.inicio), quando(o.fim)]);
     const minimo = Date.now() + A.antecedenciaMin * 60000;
+    // Horários de 30 em 30 min + o primeiro horário logo depois de cada ocupação
+    // (fim de um atendimento, ou fim + 45 min de deslocamento quando é no outro endereço).
+    const zero = instante(dia, 0).getTime();
+    const candidatos = new Set();
+    for (let t = minutos(A.abre); t < minutos(A.fecha); t += A.passoMin) candidatos.add(t);
+    for (const [, b] of ocupados) { const t = Math.ceil((b - zero) / 900000) * 15; if (t >= minutos(A.abre)) candidatos.add(t); }
     const livres = [];
-    for (let t = minutos(A.abre); t + s.duracao_min <= minutos(A.fecha); t += A.passoMin) {
+    for (const t of [...candidatos].sort((x, y) => x - y)) {
+      if (t + s.duracao_min > minutos(A.fecha)) continue;
       const ini = instante(dia, t).getTime(), fim = ini + s.duracao_min * 60000;
       if (ini < minimo) continue;
       if (ocupados.some(([a, b]) => ini < b && fim > a)) continue;

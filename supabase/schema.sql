@@ -1,9 +1,10 @@
 -- Agenda GWS Espaço Beleza · projeto Supabase próprio gws-espaco-beleza (kqonnkaongmsjwdpeuoo)
 -- Uma profissional só, dois locais, UMA agenda:
 --   * nenhum atendimento se sobrepõe (independente do local);
---   * entre atendimentos em locais diferentes há no mínimo 60 min (deslocamento).
---     Feito com a coluna "folga" (período ±30 min) + exclusion (local <> local, folga && folga).
--- Ter–sáb 08:00–18:00 (fecha dom e seg), passos de 30 min.
+--   * entre atendimentos em locais diferentes há no mínimo 45 min (deslocamento).
+--     Feito com a coluna "folga" (período ±22min30s) + exclusion (local <> local, folga && folga).
+-- Ter–sáb 08:00–18:00 (fecha dom e seg). Início em múltiplos de 15 min (o site mostra de 30 em 30
+-- e também o primeiro horário livre logo depois de cada atendimento/deslocamento).
 
 create extension if not exists btree_gist with schema extensions;
 
@@ -29,7 +30,7 @@ create table public.agendamentos (
   servico_id smallint not null references public.servicos(id),
   local_id smallint not null references public.locais(id),
   periodo tstzrange not null,
-  folga tstzrange not null,  -- periodo com 30 min a mais de cada lado (preenchida por agendar)
+  folga tstzrange not null,  -- periodo com 22min30s a mais de cada lado (2 × 22min30s = 45 min) (preenchida por agendar)
   nome text not null check (char_length(btrim(nome)) between 2 and 80),
   telefone text not null check (telefone ~ '^[0-9]{10,13}$'),
   obs text check (obs is null or char_length(obs) <= 500),
@@ -92,7 +93,7 @@ create policy "admin cria bloqueios" on public.bloqueios for insert to authentic
 create policy "admin apaga bloqueios" on public.bloqueios for delete to authenticated using ((select public.is_admin()));
 
 -- Intervalos indisponíveis de um dia para quem quer agendar em p_local (sem dados pessoais).
--- Atendimentos no outro local voltam "alargados" em 60 min de cada lado (deslocamento).
+-- Atendimentos no outro local voltam "alargados" em 45 min de cada lado (deslocamento).
 create or replace function public.horarios_ocupados(p_local smallint, p_dia date)
 returns table (inicio timestamptz, fim timestamptz)
 language sql stable security definer set search_path = ''
@@ -100,8 +101,8 @@ as $$
   with dia as (
     select tstzrange((p_dia::timestamp) at time zone 'America/Sao_Paulo', ((p_dia + 1)::timestamp) at time zone 'America/Sao_Paulo') as r
   )
-  select case when a.local_id = p_local then lower(a.periodo) else lower(a.periodo) - interval '60 minutes' end,
-         case when a.local_id = p_local then upper(a.periodo) else upper(a.periodo) + interval '60 minutes' end
+  select case when a.local_id = p_local then lower(a.periodo) else lower(a.periodo) - interval '45 minutes' end,
+         case when a.local_id = p_local then upper(a.periodo) else upper(a.periodo) + interval '45 minutes' end
     from public.agendamentos a, dia
    where a.status = 'confirmado' and a.folga && dia.r
   union all
@@ -127,7 +128,7 @@ begin
   if extract(isodow from v_local) in (1, 7) then raise exception 'Não atendemos aos domingos e segundas' using errcode = 'P0001'; end if;
   if v_local::time < time '08:00' or v_local_fim::time > time '18:00' or v_local_fim::date <> v_local::date then
     raise exception 'Fora do horário de atendimento (8h às 18h)' using errcode = 'P0001'; end if;
-  if extract(minute from v_local)::int % 30 <> 0 or extract(second from v_local) <> 0 then raise exception 'Horário inválido' using errcode = 'P0001'; end if;
+  if extract(minute from v_local)::int % 15 <> 0 or extract(second from v_local) <> 0 then raise exception 'Horário inválido' using errcode = 'P0001'; end if;
   if char_length(btrim(coalesce(p_nome, ''))) < 2 then raise exception 'Informe seu nome' using errcode = 'P0001'; end if;
   if v_tel !~ '^[0-9]{10,13}$' then raise exception 'Informe um WhatsApp válido com DDD' using errcode = 'P0001'; end if;
   if (select count(*) from public.agendamentos where telefone = v_tel and status = 'confirmado' and upper(periodo) > now()) >= 3 then
@@ -137,7 +138,7 @@ begin
   begin
     insert into public.agendamentos (servico_id, local_id, periodo, folga, nome, telefone, obs)
     values (p_servico, p_local, tstzrange(p_inicio, v_fim),
-            tstzrange(p_inicio - interval '30 minutes', v_fim + interval '30 minutes'),
+            tstzrange(p_inicio - interval '22 minutes 30 seconds', v_fim + interval '22 minutes 30 seconds'),
             btrim(p_nome), v_tel, nullif(btrim(coalesce(p_obs, '')), ''))
     returning id into v_id;
   exception when exclusion_violation then
