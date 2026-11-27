@@ -1,4 +1,4 @@
-/* GWS Espaço Beleza · Painel da agenda (administração) */
+/* GWS Espaço Beleza Cosméticos · Painel da agenda (administração) */
 (() => {
   const A = window.SITE.agenda;
   const sb = window.supabase.createClient(A.url, A.chave, { auth: { persistSession: true, detectSessionInUrl: true, flowType: "implicit" } });

@@ -234,7 +234,7 @@ p { margin: 0 0 1em; color: var(--texto-suave); text-wrap: pretty; }
   .momento:not(:first-of-type), .cine-dica { display: none; }
 }
 
-/* ── GWS Espaço Beleza: marca e ajustes ─────────────────────────────── */
+/* ── GWS Espaço Beleza Cosméticos: marca e ajustes ─────────────────────────────── */
 .marca { gap: 12px; }
 .monograma {
   font-family: var(--fonte-titulo); font-style: italic; font-weight: 500;
@@ -244,6 +244,7 @@ p { margin: 0 0 1em; color: var(--texto-suave); text-wrap: pretty; }
 .monograma::after { content: "✦"; position: absolute; font-size: 8px; font-style: normal; left: 46%; top: 52%; color: var(--acento); }
 .marca-texto { font-size: 15px; letter-spacing: .32em; text-transform: uppercase; font-weight: 500; }
 .marca-texto small { display: block; font-family: var(--fonte-texto); font-size: 9px; letter-spacing: .38em; color: var(--texto-suave); margin-top: 3px; }
+.marca-cosm { display: block; font-size: .72em; letter-spacing: .42em; color: var(--acento); margin-top: 4px; }
 h1, h2 { font-weight: 400; }
 h1 em, h2 em { color: var(--acento); }
 .cartoes { grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr)); }

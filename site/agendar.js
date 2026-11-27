@@ -1,4 +1,4 @@
-/* GWS Espaço Beleza · Agenda online (cliente) · dois endereços, uma agenda */
+/* GWS Espaço Beleza Cosméticos · Agenda online (cliente) · dois endereços, uma agenda */
 (() => {
   const S = window.SITE, A = S.agenda;
   const sb = window.supabase.createClient(A.url, A.chave, { auth: { persistSession: false } });
@@ -197,7 +197,7 @@
     if (S.contato.web3formsChave) {
       fetch("https://api.web3forms.com/submit", {
         method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ access_key: S.contato.web3formsChave, subject: `Novo agendamento: ${s.nome} · ${quando} · ${l.nome}`, from_name: "Agenda GWS Espaço Beleza",
+        body: JSON.stringify({ access_key: S.contato.web3formsChave, subject: `Novo agendamento: ${s.nome} · ${quando} · ${l.nome}`, from_name: "Agenda GWS Espaço Beleza Cosméticos",
           servico: s.nome, endereco: l.endereco, quando, nome, whatsapp: telFinal, observacao: obs || "-" }),
       }).catch(() => {});
     }

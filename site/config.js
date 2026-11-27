@@ -1,6 +1,6 @@
 /* Site Cinematográfico · © 2026 Labrego IA · LBG-SC-2026-v1 */
 window.SITE = {
-  nome: "GWS Espaço Beleza",
+  nome: "GWS Espaço Beleza Cosméticos",
   assinatura: "LBG-SC-20261119-4EE08A647A",
 
   whatsapp: {
@@ -12,7 +12,7 @@ window.SITE = {
     email: "johenartegrafica@gmail.com",
     // Opcional: chave do Web3Forms (https://web3forms.com). Se vazio, usa FormSubmit.
     web3formsChave: "7fd1863f-4882-43a4-af5a-5fbcd02917f3",
-    assunto: "Novo contato pelo site GWS Espaço Beleza",
+    assunto: "Novo contato pelo site GWS Espaço Beleza Cosméticos",
   },
 
   // Agenda online (Supabase). A chave anon é pública por natureza; a segurança fica nas regras (RLS) do banco.
